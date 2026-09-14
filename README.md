@@ -1,3 +1,134 @@
+[English](#english) | [Русский](#russian)
+
+---
+
+
+## English
+
+This Python script is designed to extract individual private keys for the relatively new Bitcoin taproot format (BIP-86 specification) from a 12- or 24-word mnemonic phrase and an optional passphrase. Following the instructions below, the script can be prepared for offline execution on a computer without an internet connection (for example, using a live USB with Tails OS or on an "air-gapped" PC).
+
+Created as a companion to the offline browser utility [iancoleman/bip39](https://github.com/iancoleman/bip39), which as of 2026 still does not support the taproot format (BIP-86).
+Also as of 2026:
+- The Electrum Bitcoin wallet still does not support the taproot format.
+- The more advanced Sparrow Bitcoin wallet supports the taproot format, but does not support displaying private keys.
+
+
+
+
+### Preparing a Standalone Environment for Offline Execution (Tails / Air-gapped PC)
+
+To run the script in an isolated environment without internet access (for example, in Tails), the following are required:
+
+1. `py_runtime` directory — a portable standalone binary of the required Python version (CPython standalone).
+2. `wheels` directory — the pre-built `bip-utils` library and all its dependencies, compatible with the Python version in `py_runtime`.
+
+Preparation is performed on a computer with internet access using the [`uv`](https://github.com/astral-sh/uv) package manager.
+
+---
+
+#### Step 1. Navigate to the project directory
+
+Connect the USB drive or open the working directory:
+
+```bash
+cd tails_bip86
+
+```
+
+---
+
+#### Step 2. Download standalone Python runtime (`py_runtime`)
+
+Download a portable standalone binary for Python 3.11, 3.12, 3.13 (or newer, once all required libraries are built into wheels), in this case for the `x86_64` architecture:
+
+```bash
+uv python install 3.12 --install-dir ./py_runtime
+
+```
+
+```bash
+uv python install 3.13 --install-dir ./py_runtime
+
+```
+
+A folder like `cpython-3.13.X-linux-x86_64-gnu/` will appear in the `py_runtime` directory.
+
+*(Optional)* If `uv` created a broken relative symlink inside `py_runtime`, remove or fix it:
+
+```bash
+cd py_runtime
+rm -f cpython-3.13-linux-x86_64-gnu
+ln -s cpython-3.13.*-linux-x86_64-gnu cpython-3.11-linux-x86_64-gnu
+cd ..
+
+```
+
+---
+
+#### Step 3. Install libraries into the `wheels` directory
+
+Build and install the `bip-utils` library with all its dependencies into the local `./wheels` folder.
+
+Be sure to specify the Python version flag, for example `--python 3.13`, so that C-extensions (modules like `crcmod` and `cffi`) are compiled strictly for the downloaded runtime version, rather than for the host machine's system Python:
+
+```bash
+uv pip install \
+  --python 3.12 \
+  --target ./wheels \
+  bip-utils
+
+```
+
+
+```bash
+uv pip install \
+  --python 3.13 \
+  --target ./wheels \
+  bip-utils
+
+```
+
+---
+
+#### Step 4. Verify the final file structure
+
+Before transferring to the offline machine, make sure the `tails_bip86` directory structure looks as follows:
+
+```text
+tails_bip86/
+├── py_runtime/
+│   └── cpython-3.13.X-linux-x86_64-gnu/
+│       └── bin/
+│           └── python3
+├── wheels/
+│   ├── bip_utils/
+│   ├── cffi/
+│   ├── crcmod/
+│   └── ... (remaining modules)
+├── extract_key.py
+└── run.sh
+
+```
+
+---
+
+#### Step 5. Run on an offline machine (Tails)
+
+1. Connect the storage drive to the isolated computer, e.g. booted from a Tails USB flash drive.
+2. Navigate to the script directory in the terminal:
+```bash
+cd /path/to/tails_bip86
+chmod +x run.sh
+./run.sh
+
+```
+
+
+3. The script will run without accessing the network and without using system OS packages.
+
+---
+
+## Russian
 
 Данный python-скрипт предназначен для получения отдельных приватных ключей относительного нового формата Bitcoin taproot (спецификация BIP-86) из 12-ти или 24-х слов mnemonic фразы и опционального passpharse. Следуя инструкциям ниже, скрипт можно подготовить для запуска в офлайн режиме на компьютере без подключения к интернету (например, с использованием загруженной с флешки с ОС Tails или на "air-gapped" ПК).
 
@@ -124,125 +255,4 @@ chmod +x run.sh
 
 ---
 
-## English
 
-This Python script is designed to extract individual private keys for the relatively new Bitcoin taproot format (BIP-86 specification) from a 12- or 24-word mnemonic phrase and an optional passphrase. Following the instructions below, the script can be prepared for offline execution on a computer without an internet connection (for example, using a live USB with Tails OS or on an "air-gapped" PC).
-
-Created as a companion to the offline browser utility [iancoleman/bip39](https://github.com/iancoleman/bip39), which as of 2026 still does not support the taproot format (BIP-86).
-Also as of 2026:
-- The Electrum Bitcoin wallet still does not support the taproot format.
-- The more advanced Sparrow Bitcoin wallet supports the taproot format, but does not support displaying private keys.
-
-
-
-
-### Preparing a Standalone Environment for Offline Execution (Tails / Air-gapped PC)
-
-To run the script in an isolated environment without internet access (for example, in Tails), the following are required:
-
-1. `py_runtime` directory — a portable standalone binary of the required Python version (CPython standalone).
-2. `wheels` directory — the pre-built `bip-utils` library and all its dependencies, compatible with the Python version in `py_runtime`.
-
-Preparation is performed on a computer with internet access using the [`uv`](https://github.com/astral-sh/uv) package manager.
-
----
-
-#### Step 1. Navigate to the project directory
-
-Connect the USB drive or open the working directory:
-
-```bash
-cd tails_bip86
-
-```
-
----
-
-#### Step 2. Download standalone Python runtime (`py_runtime`)
-
-Download a portable standalone binary for Python 3.11, 3.12, 3.13 (or newer, once all required libraries are built into wheels), in this case for the `x86_64` architecture:
-
-```bash
-uv python install 3.12 --install-dir ./py_runtime
-
-```
-
-```bash
-uv python install 3.13 --install-dir ./py_runtime
-
-```
-
-A folder like `cpython-3.13.X-linux-x86_64-gnu/` will appear in the `py_runtime` directory.
-
-*(Optional)* If `uv` created a broken relative symlink inside `py_runtime`, remove or fix it:
-
-```bash
-cd py_runtime
-rm -f cpython-3.13-linux-x86_64-gnu
-ln -s cpython-3.13.*-linux-x86_64-gnu cpython-3.11-linux-x86_64-gnu
-cd ..
-
-```
-
----
-
-#### Step 3. Install libraries into the `wheels` directory
-
-Build and install the `bip-utils` library with all its dependencies into the local `./wheels` folder.
-
-Be sure to specify the Python version flag, for example `--python 3.13`, so that C-extensions (modules like `crcmod` and `cffi`) are compiled strictly for the downloaded runtime version, rather than for the host machine's system Python:
-
-```bash
-uv pip install \
-  --python 3.12 \
-  --target ./wheels \
-  bip-utils
-
-```
-
-
-```bash
-uv pip install \
-  --python 3.13 \
-  --target ./wheels \
-  bip-utils
-
-```
-
----
-
-#### Step 4. Verify the final file structure
-
-Before transferring to the offline machine, make sure the `tails_bip86` directory structure looks as follows:
-
-```text
-tails_bip86/
-├── py_runtime/
-│   └── cpython-3.13.X-linux-x86_64-gnu/
-│       └── bin/
-│           └── python3
-├── wheels/
-│   ├── bip_utils/
-│   ├── cffi/
-│   ├── crcmod/
-│   └── ... (remaining modules)
-├── extract_key.py
-└── run.sh
-
-```
-
----
-
-#### Step 5. Run on an offline machine (Tails)
-
-1. Connect the storage drive to the isolated computer, e.g. booted from a Tails USB flash drive.
-2. Navigate to the script directory in the terminal:
-```bash
-cd /path/to/tails_bip86
-chmod +x run.sh
-./run.sh
-
-```
-
-
-3. The script will run without accessing the network and without using system OS packages.
