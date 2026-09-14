@@ -106,6 +106,7 @@ tails_bip86/
 │   ├── crcmod/
 │   └── ... (remaining modules)
 ├── extract_key.py
+├── extract_key_en.py
 └── run.sh
 
 ```
@@ -119,12 +120,22 @@ tails_bip86/
 ```bash
 cd /path/to/tails_bip86
 chmod +x run.sh
-./run.sh
-
 ```
 
+3. Run the script. By default, English is used (`extract_key_en.py`). You can select the interface language using the `-l` or `--lang` option (`en` or `ru`):
 
-3. The script will run without accessing the network and without using system OS packages.
+```bash
+# English (default)
+./run.sh
+
+# or explicitly:
+./run.sh -l en
+
+# Russian (extract_key.py)
+./run.sh -l ru
+```
+
+4. The script will run without accessing the network and without using system OS packages.
 
 ---
 
@@ -232,6 +243,7 @@ tails_bip86/
 │   ├── crcmod/
 │   └── ... (остальные модули)
 ├── extract_key.py
+├── extract_key_en.py
 └── run.sh
 
 ```
@@ -245,12 +257,22 @@ tails_bip86/
 ```bash
 cd /path/to/tails_bip86
 chmod +x run.sh
-./run.sh
-
 ```
 
+3. Запустите скрипт. По умолчанию используется английский язык (`extract_key_en.py`). Язык интерфейса можно выбрать с помощью ключа `-l` или `--lang` (`en` или `ru`):
 
-3. Скрипт запустится без обращения к сети и без использования системных пакетов ОС.
+```bash
+# Английский язык (по умолчанию)
+./run.sh
+
+# или явно:
+./run.sh -l en
+
+# Русский язык (extract_key.py)
+./run.sh -l ru
+```
+
+4. Скрипт запустится без обращения к сети и без использования системных пакетов ОС.
 
 
 ---
