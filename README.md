@@ -42,11 +42,6 @@ cd tails_bip86
 Download a portable standalone binary for Python 3.11, 3.12, 3.13 (or newer, once all required libraries are built into wheels), in this case for the `x86_64` architecture:
 
 ```bash
-uv python install 3.12 --install-dir ./py_runtime
-
-```
-
-```bash
 uv python install 3.13 --install-dir ./py_runtime
 
 ```
@@ -71,13 +66,6 @@ Build and install the `bip-utils` library with all its dependencies into the loc
 
 Be sure to specify the Python version flag, for example `--python 3.13`, so that C-extensions (modules like `crcmod` and `cffi`) are compiled strictly for the downloaded runtime version, rather than for the host machine's system Python:
 
-```bash
-uv pip install \
-  --python 3.12 \
-  --target ./wheels \
-  bip-utils
-
-```
 
 
 ```bash
@@ -178,10 +166,6 @@ cd tails_bip86
 
 Скачайте переносимый автономный бинарник Python 3.11, 3.12, 3.13 (или более новой, когда все необходимые библиотеки будут собираться в wheels) в данном случае для архитектуры `x86_64`:
 
-```bash
-uv python install 3.12 --install-dir ./py_runtime
-
-```
 
 ```bash
 uv python install 3.13 --install-dir ./py_runtime
@@ -208,13 +192,6 @@ cd ..
 
 Обязательно укажите флаг версии Python например `--python 3.13`, чтобы C-расширения (модули вроде `crcmod` и `cffi`) были скомпилированы строго под рантайм скаченной версии, а не под системный Python хост-машины:
 
-```bash
-uv pip install \
-  --python 3.12 \
-  --target ./wheels \
-  bip-utils
-
-```
 
 
 ```bash
