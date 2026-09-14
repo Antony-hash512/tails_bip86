@@ -4,7 +4,6 @@ set -e
 # RU: Язык по умолчанию — английский (en)
 # EN: Default language is English (en)
 LANG_OPT="en"
-EXTRA_ARGS=()
 
 # RU: Парсинг аргументов командной строки (-l / --lang)
 # EN: Parse command-line arguments (-l / --lang)
@@ -30,8 +29,11 @@ while [ $# -gt 0 ]; do
             exit 0
             ;;
         *)
-            EXTRA_ARGS+=("$1")
-            shift
+            echo "Error: Unknown argument '$1'." >&2
+            echo "Ошибка: Неизвестный аргумент '$1'." >&2
+            echo "Usage: $0 [-l|--lang ru|en]" >&2
+            echo "Использование: $0 [-l|--lang ru|en]" >&2
+            exit 1
             ;;
     esac
 done
@@ -90,6 +92,6 @@ if [ ! -f "${SCRIPT_TARGET}" ]; then
     exit 1
 fi
 
-# RU: Запуск скрипта через изолированный рантайм, передавая все остальные аргументы
-# EN: Run the script using isolated runtime, passing all remaining arguments
-exec "${PYTHON_BIN}" "${SCRIPT_TARGET}" "${EXTRA_ARGS[@]}"
+# RU: Запуск скрипта через изолированный рантайм
+# EN: Run the script using isolated runtime
+exec "${PYTHON_BIN}" "${SCRIPT_TARGET}"
